@@ -132,6 +132,72 @@
             padding: 2rem;
             margin-top: 2rem;
         }
+        
+        /* Popup styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .popup {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s;
+        }
+        
+        .popup-overlay.active .popup {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .popup h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .popup p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .popup-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        .popup-btn:hover {
+            background: #2980b9;
+        }
     </style>
 </head>
 <body>
@@ -186,6 +252,15 @@
         <p>© 2024 EduLearn Platform - Empowering Education</p>
     </footer>
 
+    <!-- Custom popup -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <h3>Thanks for your feedback! 🎉</h3>
+            <p>We appreciate you taking the time to reach out to us.</p>
+            <button class="popup-btn" id="closePopup">Close</button>
+        </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         // Handle form submission
@@ -250,13 +325,27 @@
                     spread: 70,
                     origin: { y: 0.6 }
                 });
-
-                // Show thank you message
-                alert('Thanks for your feedback! 🎉');
+                
+                // Show popup
+                document.getElementById('popupOverlay').classList.add('active');
+                
+                // Reset form
                 document.getElementById('contactForm').reset();
             } catch (error) {
                 console.error('Error:', error);
                 alert('There was an error sending your message. Please try again.');
+            }
+        });
+        
+        // Close popup when clicking the close button
+        document.getElementById('closePopup').addEventListener('click', function() {
+            document.getElementById('popupOverlay').classList.remove('active');
+        });
+        
+        // Close popup when clicking outside
+        document.getElementById('popupOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
             }
         });
     </script>
