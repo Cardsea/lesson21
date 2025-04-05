@@ -3,146 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Classroom</title>
-    <link rel="icon" type="image/png" href="https://ssl.gstatic.com/classroom/favicon.png">
-    <link rel="stylesheet" href="../styles.css">
+    <title>Cool Games 🎮</title>
     <style>
-        /* Popup styles */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+        body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
         }
         
-        .popup-overlay.active {
-            opacity: 1;
-            visibility: visible;
+        h1 {
+            color: #00ff88;
+            font-size: 48px;
+            margin: 20px;
+            text-shadow: 0 0 10px #00ff88;
         }
         
-        .popup {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+        }
+        
+        .game-card {
+            background: #2a2a2a;
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s;
-        }
-        
-        .popup-overlay.active .popup {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .popup h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-        
-        .popup p {
-            color: #666;
-            margin-bottom: 20px;
-        }
-        
-        .popup-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .popup-btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         
-        .popup-btn:hover {
-            background: #2980b9;
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px #00ff88;
         }
         
-        .popup-btn.secondary {
-            background: #95a5a6;
+        .game-card h2 {
+            color: #00ff88;
+            margin: 10px 0;
         }
         
-        .popup-btn.secondary:hover {
-            background: #7f8c8d;
+        .game-card p {
+            color: #fff;
+            margin: 10px 0;
+        }
+        
+        .game-icon {
+            font-size: 48px;
+            margin: 10px;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Interactive Learning Games 🎮</h1>
-        <nav>
-            <a href="../">Back to Home</a>
-            <a href="#games">Games</a>
-            <a href="#about">About</a>
-        </nav>
-    </header>
-
-    <main>
-        <section id="games" class="games-grid">
-            <!-- Game cards will be added here -->
-        </section>
-    </main>
-
-    <footer>
-        <p>Educational Games - Part of EduTech Learning Platform</p>
-    </footer>
-
-    <!-- Cookie consent popup -->
-    <div class="popup-overlay" id="cookiePopup">
-        <div class="popup">
-            <h3>Cookie Consent 🍪</h3>
-            <p>We use cookies to enhance your experience and provide personalized content. Do you accept our cookie policy?</p>
-            <div class="popup-buttons">
-                <button class="popup-btn" id="acceptCookies">Accept</button>
-                <button class="popup-btn secondary" id="declineCookies">Decline</button>
+    <h1>Cool Games 🎮</h1>
+    <div class="games-grid">
+        <a href="snake/index.html">
+            <div class="game-card">
+                <div class="game-icon">🐍</div>
+                <h2>Snake</h2>
+                <p>Classic snake game with neon theme</p>
             </div>
-        </div>
+        </a>
+        <a href="tictactoe/index.html">
+            <div class="game-card">
+                <div class="game-icon">⭕</div>
+                <h2>Tic Tac Toe</h2>
+                <p>Classic X's and O's game</p>
+            </div>
+        </a>
+        <a href="tetris/index.html">
+            <div class="game-card">
+                <div class="game-icon">🧊</div>
+                <h2>Tetris</h2>
+                <p>Stack the blocks and clear lines</p>
+            </div>
+        </a>
+        <a href="pacman/index.html">
+            <div class="game-card">
+                <div class="game-icon">👻</div>
+                <h2>Pac-Man</h2>
+                <p>Eat dots and avoid ghosts</p>
+            </div>
+        </a>
+        <a href="space/index.html">
+            <div class="game-card">
+                <div class="game-icon">🚀</div>
+                <h2>Space Invaders</h2>
+                <p>Shoot down alien ships</p>
+            </div>
+        </a>
+        <a href="bubble/index.html">
+            <div class="game-card">
+                <div class="game-icon">🫧</div>
+                <h2>Bubble Shooter</h2>
+                <p>Pop colorful bubbles</p>
+            </div>
+        </a>
+        <a href="color/index.html">
+            <div class="game-card">
+                <div class="game-icon">🎨</div>
+                <h2>Color Match</h2>
+                <p>Match the colors against time</p>
+            </div>
+        </a>
+        <a href="math/index.html">
+            <div class="game-card">
+                <div class="game-icon">🧮</div>
+                <h2>Math Challenge</h2>
+                <p>Solve math problems fast</p>
+            </div>
+        </a>
+        <a href="mines/index.html">
+            <div class="game-card">
+                <div class="game-icon">💣</div>
+                <h2>Minesweeper</h2>
+                <p>Avoid the mines and win</p>
+            </div>
+        </a>
+        <a href="puzzle/index.html">
+            <div class="game-card">
+                <div class="game-icon">🧩</div>
+                <h2>Sliding Puzzle</h2>
+                <p>Arrange the tiles in order</p>
+            </div>
+        </a>
+        <a href="rps/index.html">
+            <div class="game-card">
+                <div class="game-icon">🪨📄✂️</div>
+                <h2>Rock Paper Scissors</h2>
+                <p>Classic hand game</p>
+            </div>
+        </a>
+        <a href="sudoku/index.html">
+            <div class="game-card">
+                <div class="game-icon">🧩</div>
+                <h2>Sudoku</h2>
+                <p>Fill the grid with numbers</p>
+            </div>
+        </a>
+        <a href="typing/index.html">
+            <div class="game-card">
+                <div class="game-icon">⌨️</div>
+                <h2>Speed Typing</h2>
+                <p>Type words as fast as you can</p>
+            </div>
+        </a>
+        <a href="whack/index.html">
+            <div class="game-card">
+                <div class="game-icon">🔨</div>
+                <h2>Whack-a-Mole</h2>
+                <p>Hit the moles before they hide</p>
+            </div>
+        </a>
+        <a href="word/index.html">
+            <div class="game-card">
+                <div class="game-icon">📚</div>
+                <h2>Word Scramble</h2>
+                <p>Unscramble the tech words</p>
+            </div>
+        </a>
     </div>
-    
-    <script src="../script.js"></script>
-    <script>
-        // Show cookie consent popup
-        function showCookieConsent() {
-            if (!localStorage.getItem('cookieConsent')) {
-                document.getElementById('cookiePopup').classList.add('active');
-            }
-        }
-        
-        // Handle cookie consent
-        document.getElementById('acceptCookies').addEventListener('click', function() {
-            localStorage.setItem('cookieConsent', 'accepted');
-            document.getElementById('cookiePopup').classList.remove('active');
-            showRecommendedGame();
-        });
-        
-        document.getElementById('declineCookies').addEventListener('click', function() {
-            localStorage.setItem('cookieConsent', 'declined');
-            document.getElementById('cookiePopup').classList.remove('active');
-        });
-        
-        // Show cookie consent on page load
-        showCookieConsent();
-    </script>
 </body>
 </html> 
