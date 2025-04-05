@@ -216,7 +216,7 @@
             <h2>Contact Us</h2>
             <p>Have questions or feedback? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.</p>
             
-            <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <form class="contact-form" id="contactForm">
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" name="name" required>
@@ -333,7 +333,10 @@
                 document.getElementById('contactForm').reset();
             } catch (error) {
                 console.error('Error:', error);
-                alert('There was an error sending your message. Please try again.');
+                // Show error popup
+                document.querySelector('.popup h3').textContent = 'Oops! Something went wrong 😅';
+                document.querySelector('.popup p').textContent = 'There was an error sending your message. Please try again.';
+                document.getElementById('popupOverlay').classList.add('active');
             }
         });
         
