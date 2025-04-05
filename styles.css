@@ -79,4 +79,74 @@ footer {
     padding: 2rem;
     background: #2d2d2d;
     margin-top: 2rem;
+}
+
+.cookie-popup {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2d2d2d;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    z-index: 1000;
+    max-width: 400px;
+    width: 90%;
+}
+
+.cookie-content {
+    text-align: center;
+}
+
+.cookie-content h3 {
+    color: #00ff88;
+    margin-bottom: 10px;
+}
+
+.cookie-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cookie-buttons button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.accept-btn {
+    background: #00ff88;
+    color: #1a1a1a;
+}
+
+.decline-btn {
+    background: #ff4444;
+    color: white;
+}
+
+.accept-btn:hover, .decline-btn:hover {
+    transform: scale(1.05);
+}
+
+.recommended-game {
+    border: 2px solid #00ff88 !important;
+    position: relative;
+}
+
+.recommended-game::before {
+    content: "⭐ Recommended!";
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #00ff88;
+    color: #1a1a1a;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
 } 

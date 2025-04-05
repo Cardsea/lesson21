@@ -21,18 +21,73 @@ const games = [
     { name: "Rock Paper Scissors ✂️", image: "https://cdn-icons-png.flaticon.com/512/2171/2171993.png", link: "games/rps/" }
 ];
 
+// Cookie handling functions
+function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+function getCookie(name) {
+    const cookieName = name + "=";
+    const cookies = document.cookie.split(';');
+    for(let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
+    return "";
+}
+
+// Show cookie consent popup if not already accepted
+function showCookieConsent() {
+    if (!getCookie('cookieConsent')) {
+        const cookiePopup = document.getElementById('cookie-consent');
+        cookiePopup.style.display = 'block';
+    }
+}
+
+// Handle cookie consent buttons
+document.getElementById('accept-cookies').addEventListener('click', () => {
+    setCookie('cookieConsent', 'accepted', 365);
+    document.getElementById('cookie-consent').style.display = 'none';
+});
+
+document.getElementById('decline-cookies').addEventListener('click', () => {
+    setCookie('cookieConsent', 'declined', 365);
+    document.getElementById('cookie-consent').style.display = 'none';
+});
+
+// Store last played game
+function storeLastPlayedGame(gameName) {
+    if (getCookie('cookieConsent') === 'accepted') {
+        setCookie('lastPlayedGame', gameName, 365);
+    }
+}
+
+// Modify the game card click handler to store last played game
 function createGameCards() {
     const gamesGrid = document.querySelector('.games-grid');
+    const lastPlayedGame = getCookie('lastPlayedGame');
     
     games.forEach(game => {
         const gameCard = document.createElement('div');
         gameCard.className = 'game-card';
+        
+        // Add recommended class if this was the last played game
+        if (game.name === lastPlayedGame) {
+            gameCard.classList.add('recommended-game');
+        }
+        
         gameCard.innerHTML = `
             <img src="${game.image}" alt="${game.name}">
             <h3>${game.name}</h3>
         `;
         
         gameCard.addEventListener('click', () => {
+            storeLastPlayedGame(game.name);
             window.location.href = game.link;
         });
         
@@ -40,5 +95,8 @@ function createGameCards() {
     });
 }
 
-// Create game cards when the page loads
-document.addEventListener('DOMContentLoaded', createGameCards); 
+// Show cookie consent when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    createGameCards();
+    showCookieConsent();
+}); 
