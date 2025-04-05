@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Scramble 📚</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .game-container {
+            width: 600px;
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00ff88;
+            margin: 20px;
+        }
+        .scrambled-word {
+            font-size: 36px;
+            text-align: center;
+            color: #00ff88;
+            margin: 20px 0;
+            letter-spacing: 5px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            background: #3a3a3a;
+            border: 2px solid #00ff88;
+            color: #fff;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #00ffaa;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            color: #00ff88;
+            font-size: 24px;
+        }
+        .timer {
+            font-size: 48px;
+            color: #00ff88;
+            margin: 20px 0;
+        }
+        .back-btn {
+            background: #00ff88;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .start-btn {
+            background: #00ff88;
+            color: #1a1a1a;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 20px;
+        }
+        .start-btn:hover {
+            background: #00ffaa;
+        }
+        .result {
+            font-size: 24px;
+            color: #00ff88;
+            margin: 20px;
+            text-align: center;
+        }
+        .hint {
+            color: #00ff88;
+            font-size: 18px;
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .hint:hover {
+            color: #00ffaa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Word Scramble 📚</h1>
+    <div class="timer" id="timer">60</div>
+    <div class="game-container">
+        <div class="scrambled-word" id="scrambledWord"></div>
+        <input type="text" class="input-field" id="inputField" placeholder="Type your answer here..." disabled>
+        <div class="hint" id="hint">Click for hint</div>
+        <div class="stats">
+            <div>Score: <span id="score">0</span></div>
+            <div>High Score: <span id="highScore">0</span></div>
+        </div>
+    </div>
+    <button class="start-btn" id="startBtn">Start Game</button>
+    <div class="result" id="result"></div>
+    <button class="back-btn" onclick="window.location.href='../../index.html'">Back to Games</button>
+
+    <script>
+        const words = [
+            { word: 'javascript', hint: 'A popular programming language' },
+            { word: 'python', hint: 'A snake-like programming language' },
+            { word: 'programming', hint: 'Writing code for computers' },
+            { word: 'computer', hint: 'An electronic device for processing data' },
+            { word: 'algorithm', hint: 'A step-by-step procedure for solving a problem' },
+            { word: 'database', hint: 'A structured set of data' },
+            { word: 'network', hint: 'A system of connected computers' },
+            { word: 'software', hint: 'Programs and data for a computer' },
+            { word: 'hardware', hint: 'Physical parts of a computer' },
+            { word: 'developer', hint: 'Someone who writes code' },
+            { word: 'coding', hint: 'Writing computer programs' },
+            { word: 'debugging', hint: 'Finding and fixing errors in code' },
+            { word: 'testing', hint: 'Checking if code works correctly' },
+            { word: 'deployment', hint: 'Making software available to users' },
+            { word: 'framework', hint: 'A platform for developing software' },
+            { word: 'library', hint: 'A collection of pre-written code' },
+            { word: 'function', hint: 'A reusable block of code' },
+            { word: 'variable', hint: 'A storage location for data' },
+            { word: 'constant', hint: 'A value that never changes' },
+            { word: 'interface', hint: 'A way to interact with a system' }
+        ];
+
+        let currentWord = '';
+        let currentHint = '';
+        let score = 0;
+        let highScore = localStorage.getItem('wordHighScore') || 0;
+        let timeLeft = 60;
+        let gameActive = false;
+        let timer;
+
+        const scrambledWordDisplay = document.getElementById('scrambledWord');
+        const inputField = document.getElementById('inputField');
+        const startBtn = document.getElementById('startBtn');
+        const timerDisplay = document.getElementById('timer');
+        const scoreDisplay = document.getElementById('score');
+        const highScoreDisplay = document.getElementById('highScore');
+        const resultDisplay = document.getElementById('result');
+        const hintDisplay = document.getElementById('hint');
+
+        highScoreDisplay.textContent = highScore;
+
+        function scrambleWord(word) {
+            return word.split('').sort(() => Math.random() - 0.5).join('');
+        }
+
+        function getRandomWord() {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            currentWord = words[randomIndex].word;
+            currentHint = words[randomIndex].hint;
+            return scrambleWord(currentWord);
+        }
+
+        function checkAnswer() {
+            if (inputField.value.toLowerCase() === currentWord) {
+                score += currentWord.length;
+                scoreDisplay.textContent = score;
+                
+                if (score > highScore) {
+                    highScore = score;
+                    highScoreDisplay.textContent = highScore;
+                    localStorage.setItem('wordHighScore', highScore);
+                }
+                
+                newWord();
+            }
+        }
+
+        function newWord() {
+            scrambledWordDisplay.textContent = getRandomWord();
+            inputField.value = '';
+            hintDisplay.textContent = 'Click for hint';
+            inputField.focus();
+        }
+
+        function showHint() {
+            if (!gameActive) return;
+            hintDisplay.textContent = currentHint;
+        }
+
+        function endGame() {
+            gameActive = false;
+            clearInterval(timer);
+            inputField.disabled = true;
+            startBtn.textContent = 'Play Again';
+            resultDisplay.textContent = `Game Over! Final Score: ${score}`;
+        }
+
+        function startGame() {
+            gameActive = true;
+            score = 0;
+            timeLeft = 60;
+            
+            scoreDisplay.textContent = score;
+            resultDisplay.textContent = '';
+            startBtn.textContent = 'Restart';
+            
+            newWord();
+            inputField.disabled = false;
+            inputField.focus();
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        inputField.addEventListener('input', checkAnswer);
+        startBtn.addEventListener('click', startGame);
+        hintDisplay.addEventListener('click', showHint);
+    </script>
+</body>
+</html> 
