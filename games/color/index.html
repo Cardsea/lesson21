@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Match 🎨</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px;
+        }
+        .color-card {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: 2px solid #00ff88;
+        }
+        .color-card:hover {
+            transform: scale(1.05);
+        }
+        .target-color {
+            width: 200px;
+            height: 50px;
+            border-radius: 10px;
+            margin: 20px;
+            border: 2px solid #00ff88;
+        }
+        h1 {
+            color: #00ff88;
+        }
+        .score {
+            font-size: 24px;
+            margin: 10px;
+            color: #00ff88;
+        }
+        .timer {
+            font-size: 24px;
+            margin: 10px;
+            color: #00ff88;
+        }
+        .back-btn {
+            background: #00ff88;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .controls {
+            color: #00ff88;
+            margin: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Match 🎨</h1>
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="timer">Time: <span id="timer">60</span>s</div>
+    <div class="target-color" id="targetColor"></div>
+    <div class="game-container" id="gameContainer"></div>
+    <div class="controls">
+        Click the color that matches the target color!
+    </div>
+    <button class="back-btn" onclick="window.location.href='../../index.html'">Back to Games</button>
+
+    <script>
+        const colors = [
+            '#ff4444', '#44ff44', '#4444ff', '#ffff44', 
+            '#ff44ff', '#44ffff', '#ff8844', '#88ff44',
+            '#4488ff', '#ff4488', '#88ff88', '#ff8888'
+        ];
+        
+        let score = 0;
+        let timeLeft = 60;
+        let gameActive = true;
+        let targetColor = '';
+        
+        function getRandomColor() {
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        function createColorCards() {
+            const container = document.getElementById('gameContainer');
+            container.innerHTML = '';
+            
+            // Create 16 color cards
+            for (let i = 0; i < 16; i++) {
+                const card = document.createElement('div');
+                card.className = 'color-card';
+                card.style.backgroundColor = getRandomColor();
+                card.addEventListener('click', () => checkMatch(card.style.backgroundColor));
+                container.appendChild(card);
+            }
+        }
+        
+        function setTargetColor() {
+            targetColor = getRandomColor();
+            document.getElementById('targetColor').style.backgroundColor = targetColor;
+        }
+        
+        function checkMatch(selectedColor) {
+            if (!gameActive) return;
+            
+            if (selectedColor === targetColor) {
+                score += 10;
+                document.getElementById('score').textContent = score;
+                createColorCards();
+                setTargetColor();
+            } else {
+                score = Math.max(0, score - 5);
+                document.getElementById('score').textContent = score;
+            }
+        }
+        
+        function updateTimer() {
+            if (timeLeft > 0 && gameActive) {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                setTimeout(updateTimer, 1000);
+            } else {
+                gameActive = false;
+                alert(`Game Over! Your score: ${score}`);
+            }
+        }
+        
+        // Start the game
+        createColorCards();
+        setTargetColor();
+        updateTimer();
+    </script>
+</body>
+</html> 

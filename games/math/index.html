@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Challenge 🧮</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .game-container {
+            text-align: center;
+            margin: 20px;
+        }
+        .problem {
+            font-size: 48px;
+            color: #00ff88;
+            margin: 20px;
+        }
+        .answer-input {
+            font-size: 24px;
+            padding: 10px;
+            width: 100px;
+            text-align: center;
+            background: #2a2a2a;
+            border: 2px solid #00ff88;
+            color: #fff;
+            border-radius: 10px;
+        }
+        .score {
+            font-size: 24px;
+            margin: 10px;
+            color: #00ff88;
+        }
+        .timer {
+            font-size: 24px;
+            margin: 10px;
+            color: #00ff88;
+        }
+        .level {
+            font-size: 24px;
+            margin: 10px;
+            color: #00ff88;
+        }
+        .back-btn {
+            background: #00ff88;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .controls {
+            color: #00ff88;
+            margin: 10px;
+            text-align: center;
+        }
+        .feedback {
+            font-size: 24px;
+            margin: 10px;
+            height: 30px;
+        }
+        .correct {
+            color: #00ff88;
+        }
+        .incorrect {
+            color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <h1>Math Challenge 🧮</h1>
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="timer">Time: <span id="timer">60</span>s</div>
+    <div class="level">Level: <span id="level">1</span></div>
+    <div class="game-container">
+        <div class="problem" id="problem">2 + 2 = ?</div>
+        <input type="number" class="answer-input" id="answer" autocomplete="off">
+        <div class="feedback" id="feedback"></div>
+    </div>
+    <div class="controls">
+        Type your answer and press Enter!
+    </div>
+    <button class="back-btn" onclick="window.location.href='../../index.html'">Back to Games</button>
+
+    <script>
+        let score = 0;
+        let timeLeft = 60;
+        let level = 1;
+        let gameActive = true;
+        
+        function generateProblem() {
+            let num1, num2, operator;
+            
+            switch(level) {
+                case 1:
+                    num1 = Math.floor(Math.random() * 10);
+                    num2 = Math.floor(Math.random() * 10);
+                    operator = '+';
+                    break;
+                case 2:
+                    num1 = Math.floor(Math.random() * 20);
+                    num2 = Math.floor(Math.random() * 20);
+                    operator = Math.random() < 0.5 ? '+' : '-';
+                    break;
+                case 3:
+                    num1 = Math.floor(Math.random() * 12);
+                    num2 = Math.floor(Math.random() * 12);
+                    operator = Math.random() < 0.33 ? '+' : Math.random() < 0.5 ? '-' : '×';
+                    break;
+                default:
+                    num1 = Math.floor(Math.random() * 20);
+                    num2 = Math.floor(Math.random() * 20);
+                    operator = Math.random() < 0.25 ? '+' : Math.random() < 0.5 ? '-' : 
+                             Math.random() < 0.75 ? '×' : '÷';
+            }
+            
+            let answer;
+            switch(operator) {
+                case '+':
+                    answer = num1 + num2;
+                    break;
+                case '-':
+                    answer = num1 - num2;
+                    break;
+                case '×':
+                    answer = num1 * num2;
+                    break;
+                case '÷':
+                    // Ensure division results in whole numbers
+                    answer = num1;
+                    num1 = num2 * answer;
+                    break;
+            }
+            
+            document.getElementById('problem').textContent = `${num1} ${operator} ${num2} = ?`;
+            return answer;
+        }
+        
+        let currentAnswer = generateProblem();
+        
+        document.getElementById('answer').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && gameActive) {
+                const userAnswer = parseInt(document.getElementById('answer').value);
+                const feedback = document.getElementById('feedback');
+                
+                if (userAnswer === currentAnswer) {
+                    score += level * 10;
+                    feedback.textContent = 'Correct! 🎉';
+                    feedback.className = 'feedback correct';
+                    level = Math.min(level + 1, 5);
+                } else {
+                    score = Math.max(0, score - 5);
+                    feedback.textContent = 'Try again! 💪';
+                    feedback.className = 'feedback incorrect';
+                }
+                
+                document.getElementById('score').textContent = score;
+                document.getElementById('level').textContent = level;
+                document.getElementById('answer').value = '';
+                currentAnswer = generateProblem();
+                
+                setTimeout(() => {
+                    feedback.textContent = '';
+                }, 1000);
+            }
+        });
+        
+        function updateTimer() {
+            if (timeLeft > 0 && gameActive) {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                setTimeout(updateTimer, 1000);
+            } else {
+                gameActive = false;
+                alert(`Game Over! Your score: ${score}`);
+            }
+        }
+        
+        updateTimer();
+    </script>
+</body>
+</html> 

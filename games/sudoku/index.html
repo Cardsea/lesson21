@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku 🧩</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 1px;
+            background: #2a2a2a;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #00ff88;
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            background: #3a3a3a;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .cell:hover {
+            background: #4a4a4a;
+        }
+        .cell.fixed {
+            color: #00ff88;
+            cursor: not-allowed;
+        }
+        .cell.selected {
+            background: #00ff88;
+            color: #1a1a1a;
+        }
+        .cell.error {
+            color: #ff4444;
+        }
+        .cell:nth-child(3n) {
+            border-right: 2px solid #00ff88;
+        }
+        .cell:nth-child(n+19):nth-child(-n+27),
+        .cell:nth-child(n+46):nth-child(-n+54) {
+            border-bottom: 2px solid #00ff88;
+        }
+        h1 {
+            color: #00ff88;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px;
+        }
+        .number-btn {
+            width: 40px;
+            height: 40px;
+            background: #2a2a2a;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .number-btn:hover {
+            background: #00ff88;
+            color: #1a1a1a;
+        }
+        .back-btn {
+            background: #00ff88;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .message {
+            color: #00ff88;
+            margin: 10px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sudoku 🧩</h1>
+    <div class="game-container" id="gameContainer"></div>
+    <div class="controls">
+        <button class="number-btn" data-number="1">1</button>
+        <button class="number-btn" data-number="2">2</button>
+        <button class="number-btn" data-number="3">3</button>
+        <button class="number-btn" data-number="4">4</button>
+        <button class="number-btn" data-number="5">5</button>
+        <button class="number-btn" data-number="6">6</button>
+        <button class="number-btn" data-number="7">7</button>
+        <button class="number-btn" data-number="8">8</button>
+        <button class="number-btn" data-number="9">9</button>
+        <button class="number-btn" data-number="0">⌫</button>
+    </div>
+    <div class="message" id="message"></div>
+    <button class="back-btn" onclick="window.location.href='../../index.html'">Back to Games</button>
+
+    <script>
+        const GRID_SIZE = 9;
+        let grid = [];
+        let selectedCell = null;
+        let gameActive = true;
+        
+        function createGrid() {
+            const container = document.getElementById('gameContainer');
+            container.innerHTML = '';
+            grid = [];
+            
+            for (let i = 0; i < GRID_SIZE; i++) {
+                grid[i] = [];
+                for (let j = 0; j < GRID_SIZE; j++) {
+                    const cell = document.createElement('input');
+                    cell.type = 'text';
+                    cell.className = 'cell';
+                    cell.maxLength = 1;
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    
+                    cell.addEventListener('click', () => handleCellClick(i, j));
+                    cell.addEventListener('input', (e) => handleCellInput(e, i, j));
+                    
+                    container.appendChild(cell);
+                    grid[i][j] = {
+                        element: cell,
+                        value: '',
+                        fixed: false
+                    };
+                }
+            }
+        }
+        
+        function generatePuzzle() {
+            // Clear the grid
+            for (let i = 0; i < GRID_SIZE; i++) {
+                for (let j = 0; j < GRID_SIZE; j++) {
+                    grid[i][j].value = '';
+                    grid[i][j].fixed = false;
+                    grid[i][j].element.value = '';
+                    grid[i][j].element.classList.remove('fixed');
+                }
+            }
+            
+            // Fill diagonal boxes first (they're independent)
+            fillDiagonalBoxes();
+            
+            // Solve the rest
+            solveSudoku();
+            
+            // Remove numbers to create puzzle
+            removeNumbers();
+        }
+        
+        function fillDiagonalBoxes() {
+            for (let box = 0; box < 3; box++) {
+                const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                shuffleArray(numbers);
+                
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 3; j++) {
+                        const row = box * 3 + i;
+                        const col = box * 3 + j;
+                        grid[row][col].value = numbers[i * 3 + j].toString();
+                        grid[row][col].element.value = grid[row][col].value;
+                    }
+                }
+            }
+        }
+        
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        function solveSudoku() {
+            for (let i = 0; i < GRID_SIZE; i++) {
+                for (let j = 0; j < GRID_SIZE; j++) {
+                    if (grid[i][j].value === '') {
+                        for (let num = 1; num <= 9; num++) {
+                            if (isValid(i, j, num.toString())) {
+                                grid[i][j].value = num.toString();
+                                grid[i][j].element.value = num.toString();
+                                
+                                if (solveSudoku()) {
+                                    return true;
+                                }
+                                
+                                grid[i][j].value = '';
+                                grid[i][j].element.value = '';
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        
+        function removeNumbers() {
+            const cellsToRemove = 40; // Adjust difficulty here
+            let count = 0;
+            
+            while (count < cellsToRemove) {
+                const row = Math.floor(Math.random() * GRID_SIZE);
+                const col = Math.floor(Math.random() * GRID_SIZE);
+                
+                if (grid[row][col].value !== '') {
+                    grid[row][col].value = '';
+                    grid[row][col].element.value = '';
+                    count++;
+                }
+            }
+            
+            // Mark remaining numbers as fixed
+            for (let i = 0; i < GRID_SIZE; i++) {
+                for (let j = 0; j < GRID_SIZE; j++) {
+                    if (grid[i][j].value !== '') {
+                        grid[i][j].fixed = true;
+                        grid[i][j].element.classList.add('fixed');
+                    }
+                }
+            }
+        }
+        
+        function isValid(row, col, num) {
+            // Check row
+            for (let j = 0; j < GRID_SIZE; j++) {
+                if (grid[row][j].value === num) return false;
+            }
+            
+            // Check column
+            for (let i = 0; i < GRID_SIZE; i++) {
+                if (grid[i][col].value === num) return false;
+            }
+            
+            // Check 3x3 box
+            const boxRow = Math.floor(row / 3) * 3;
+            const boxCol = Math.floor(col / 3) * 3;
+            
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (grid[boxRow + i][boxCol + j].value === num) return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        function handleCellClick(row, col) {
+            if (!gameActive || grid[row][col].fixed) return;
+            
+            if (selectedCell) {
+                selectedCell.element.classList.remove('selected');
+            }
+            
+            selectedCell = grid[row][col];
+            selectedCell.element.classList.add('selected');
+        }
+        
+        function handleCellInput(event, row, col) {
+            if (!gameActive || grid[row][col].fixed) return;
+            
+            const value = event.target.value;
+            if (value && !/^[1-9]$/.test(value)) {
+                event.target.value = '';
+                grid[row][col].value = '';
+                return;
+            }
+            
+            grid[row][col].value = value;
+            checkWin();
+        }
+        
+        function checkWin() {
+            for (let i = 0; i < GRID_SIZE; i++) {
+                for (let j = 0; j < GRID_SIZE; j++) {
+                    if (grid[i][j].value === '') return;
+                    if (!isValid(i, j, grid[i][j].value)) {
+                        grid[i][j].element.classList.add('error');
+                        return;
+                    }
+                    grid[i][j].element.classList.remove('error');
+                }
+            }
+            
+            gameActive = false;
+            document.getElementById('message').textContent = 'You Win! 🎉';
+        }
+        
+        // Number button handlers
+        document.querySelectorAll('.number-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!gameActive || !selectedCell || selectedCell.fixed) return;
+                
+                const number = btn.dataset.number;
+                if (number === '0') {
+                    selectedCell.value = '';
+                    selectedCell.element.value = '';
+                } else {
+                    selectedCell.value = number;
+                    selectedCell.element.value = number;
+                }
+                
+                checkWin();
+            });
+        });
+        
+        // Start the game
+        createGrid();
+        generatePuzzle();
+    </script>
+</body>
+</html> 

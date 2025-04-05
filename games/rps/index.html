@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors 🪨📄✂️</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 20px;
+        }
+        .choices {
+            display: flex;
+            gap: 20px;
+        }
+        .choice {
+            width: 100px;
+            height: 100px;
+            background: #2a2a2a;
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            transition: transform 0.2s;
+        }
+        .choice:hover {
+            transform: scale(1.1);
+        }
+        .choice.selected {
+            background: #00ff88;
+            color: #1a1a1a;
+        }
+        .vs {
+            font-size: 36px;
+            color: #00ff88;
+        }
+        .result {
+            font-size: 24px;
+            color: #00ff88;
+            height: 30px;
+        }
+        .score {
+            font-size: 24px;
+            margin: 10px;
+            color: #00ff88;
+        }
+        h1 {
+            color: #00ff88;
+        }
+        .back-btn {
+            background: #00ff88;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .controls {
+            color: #00ff88;
+            margin: 10px;
+            text-align: center;
+        }
+        .computer-choice {
+            width: 100px;
+            height: 100px;
+            background: #2a2a2a;
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock Paper Scissors 🪨📄✂️</h1>
+    <div class="score">Score: <span id="score">0</span> - <span id="computerScore">0</span></div>
+    <div class="game-container">
+        <div class="choices">
+            <div class="choice" data-choice="rock">🪨</div>
+            <div class="choice" data-choice="paper">📄</div>
+            <div class="choice" data-choice="scissors">✂️</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="computer-choice" id="computerChoice">❓</div>
+        <div class="result" id="result"></div>
+    </div>
+    <div class="controls">
+        Click your choice to play!
+    </div>
+    <button class="back-btn" onclick="window.location.href='../../index.html'">Back to Games</button>
+
+    <script>
+        const choices = ['rock', 'paper', 'scissors'];
+        const emojis = {
+            rock: '🪨',
+            paper: '📄',
+            scissors: '✂️'
+        };
+        
+        let score = 0;
+        let computerScore = 0;
+        let gameActive = true;
+        
+        function getComputerChoice() {
+            return choices[Math.floor(Math.random() * choices.length)];
+        }
+        
+        function getWinner(playerChoice, computerChoice) {
+            if (playerChoice === computerChoice) return 'tie';
+            if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                return 'player';
+            }
+            return 'computer';
+        }
+        
+        function updateScore(winner) {
+            if (winner === 'player') {
+                score++;
+                document.getElementById('score').textContent = score;
+            } else if (winner === 'computer') {
+                computerScore++;
+                document.getElementById('computerScore').textContent = computerScore;
+            }
+        }
+        
+        function showResult(playerChoice, computerChoice, winner) {
+            const result = document.getElementById('result');
+            const computerChoiceElement = document.getElementById('computerChoice');
+            
+            // Reset styles
+            document.querySelectorAll('.choice').forEach(choice => {
+                choice.classList.remove('selected');
+            });
+            
+            // Show selections
+            document.querySelector(`[data-choice="${playerChoice}"]`).classList.add('selected');
+            computerChoiceElement.textContent = emojis[computerChoice];
+            computerChoiceElement.classList.add('shake');
+            
+            // Show result
+            if (winner === 'tie') {
+                result.textContent = "It's a tie! 🤝";
+            } else if (winner === 'player') {
+                result.textContent = 'You win! 🎉';
+            } else {
+                result.textContent = 'Computer wins! 💻';
+            }
+            
+            // Remove shake animation after it completes
+            setTimeout(() => {
+                computerChoiceElement.classList.remove('shake');
+            }, 500);
+        }
+        
+        document.querySelectorAll('.choice').forEach(choice => {
+            choice.addEventListener('click', () => {
+                if (!gameActive) return;
+                
+                const playerChoice = choice.dataset.choice;
+                const computerChoice = getComputerChoice();
+                const winner = getWinner(playerChoice, computerChoice);
+                
+                updateScore(winner);
+                showResult(playerChoice, computerChoice, winner);
+            });
+        });
+    </script>
+</body>
+</html> 

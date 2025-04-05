@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliding Puzzle 🧩</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            background: #2a2a2a;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #00ff88;
+        }
+        .tile {
+            width: 100px;
+            height: 100px;
+            background: #00ff88;
+            color: #1a1a1a;
+            font-size: 36px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border-radius: 5px;
+        }
+        .tile:hover {
+            transform: scale(0.98);
+        }
+        .empty {
+            background: #2a2a2a;
+            cursor: default;
+        }
+        h1 {
+            color: #00ff88;
+        }
+        .moves {
+            font-size: 24px;
+            margin: 10px;
+            color: #00ff88;
+        }
+        .back-btn {
+            background: #00ff88;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .controls {
+            color: #00ff88;
+            margin: 10px;
+            text-align: center;
+        }
+        .win-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00ff88;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sliding Puzzle 🧩</h1>
+    <div class="moves">Moves: <span id="moveCount">0</span></div>
+    <div class="game-container" id="gameContainer"></div>
+    <div class="controls">
+        Click tiles to slide them into place!
+    </div>
+    <button class="back-btn" onclick="window.location.href='../../index.html'">Back to Games</button>
+    <div class="win-message" id="winMessage">
+        <h2>You Win! 🎉</h2>
+        <p>Moves: <span id="finalMoves">0</span></p>
+        <button class="back-btn" onclick="resetGame()">Play Again</button>
+    </div>
+
+    <script>
+        const GRID_SIZE = 3;
+        let tiles = [];
+        let emptyPos = { row: GRID_SIZE - 1, col: GRID_SIZE - 1 };
+        let moveCount = 0;
+        let gameActive = true;
+        
+        function createTiles() {
+            const container = document.getElementById('gameContainer');
+            container.innerHTML = '';
+            tiles = [];
+            
+            // Create tiles
+            for (let i = 0; i < GRID_SIZE * GRID_SIZE - 1; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'tile';
+                tile.textContent = i + 1;
+                tile.dataset.index = i;
+                
+                tile.addEventListener('click', () => handleTileClick(i));
+                container.appendChild(tile);
+                tiles.push(tile);
+            }
+            
+            // Add empty tile
+            const emptyTile = document.createElement('div');
+            emptyTile.className = 'tile empty';
+            container.appendChild(emptyTile);
+        }
+        
+        function shuffleTiles() {
+            // Perform random moves to shuffle
+            for (let i = 0; i < 1000; i++) {
+                const possibleMoves = getPossibleMoves();
+                const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+                if (randomMove) {
+                    swapTiles(randomMove.row, randomMove.col);
+                }
+            }
+            
+            // Ensure puzzle is solvable
+            if (!isSolvable()) {
+                // Swap first two tiles to make it solvable
+                const temp = tiles[0].textContent;
+                tiles[0].textContent = tiles[1].textContent;
+                tiles[1].textContent = temp;
+            }
+        }
+        
+        function getPossibleMoves() {
+            const moves = [];
+            const directions = [
+                { row: -1, col: 0 }, // up
+                { row: 1, col: 0 },  // down
+                { row: 0, col: -1 }, // left
+                { row: 0, col: 1 }   // right
+            ];
+            
+            for (const dir of directions) {
+                const newRow = emptyPos.row + dir.row;
+                const newCol = emptyPos.col + dir.col;
+                
+                if (newRow >= 0 && newRow < GRID_SIZE && 
+                    newCol >= 0 && newCol < GRID_SIZE) {
+                    moves.push({ row: newRow, col: newCol });
+                }
+            }
+            
+            return moves;
+        }
+        
+        function handleTileClick(index) {
+            if (!gameActive) return;
+            
+            const row = Math.floor(index / GRID_SIZE);
+            const col = index % GRID_SIZE;
+            
+            // Check if clicked tile is adjacent to empty space
+            const possibleMoves = getPossibleMoves();
+            const isAdjacent = possibleMoves.some(move => 
+                move.row === row && move.col === col
+            );
+            
+            if (isAdjacent) {
+                swapTiles(row, col);
+                moveCount++;
+                document.getElementById('moveCount').textContent = moveCount;
+                
+                if (checkWin()) {
+                    gameActive = false;
+                    document.getElementById('finalMoves').textContent = moveCount;
+                    document.getElementById('winMessage').style.display = 'block';
+                }
+            }
+        }
+        
+        function swapTiles(row, col) {
+            const index = row * GRID_SIZE + col;
+            const tile = tiles[index];
+            
+            // Update empty tile position
+            emptyPos = { row, col };
+            
+            // Update tile positions
+            updateTilePositions();
+        }
+        
+        function updateTilePositions() {
+            let tileIndex = 0;
+            for (let i = 0; i < GRID_SIZE; i++) {
+                for (let j = 0; j < GRID_SIZE; j++) {
+                    if (i === emptyPos.row && j === emptyPos.col) {
+                        continue;
+                    }
+                    tiles[tileIndex].style.gridRow = i + 1;
+                    tiles[tileIndex].style.gridColumn = j + 1;
+                    tileIndex++;
+                }
+            }
+        }
+        
+        function checkWin() {
+            for (let i = 0; i < tiles.length; i++) {
+                if (parseInt(tiles[i].textContent) !== i + 1) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        function isSolvable() {
+            let inversions = 0;
+            const numbers = tiles.map(tile => parseInt(tile.textContent));
+            
+            for (let i = 0; i < numbers.length; i++) {
+                for (let j = i + 1; j < numbers.length; j++) {
+                    if (numbers[i] > numbers[j]) {
+                        inversions++;
+                    }
+                }
+            }
+            
+            return inversions % 2 === 0;
+        }
+        
+        function resetGame() {
+            gameActive = true;
+            moveCount = 0;
+            document.getElementById('moveCount').textContent = moveCount;
+            document.getElementById('winMessage').style.display = 'none';
+            emptyPos = { row: GRID_SIZE - 1, col: GRID_SIZE - 1 };
+            createTiles();
+            shuffleTiles();
+            updateTilePositions();
+        }
+        
+        // Start the game
+        createTiles();
+        shuffleTiles();
+        updateTilePositions();
+    </script>
+</body>
+</html> 
