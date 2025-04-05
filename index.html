@@ -3,39 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Epic Game Zone 🎮</title>
+    <title>Google Classroom</title>
+    <link rel="icon" type="image/png" href="https://ssl.gstatic.com/classroom/favicon.png">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #f5f5f5;
+            color: #333;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        header {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            color: white;
+            font-size: 24px;
+            margin: 0;
+        }
+        
+        nav {
+            margin-top: 1rem;
+        }
+        
+        nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            margin-right: 1.5rem;
+            font-size: 14px;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 3rem 2rem;
+            background: white;
+        }
+        
+        .feature-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 2rem;
+            transition: background 0.3s;
+        }
+        
+        .cta-button:hover {
+            background: #2980b9;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Epic Game Zone 🎮</h1>
+        <h1>EduLearn Platform</h1>
         <nav>
-            <a href="#games">Games</a>
+            <a href="#courses">Courses</a>
+            <a href="#resources">Resources</a>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
         </nav>
     </header>
 
     <main>
-        <section id="games" class="games-grid">
-            <!-- Game cards will be added here -->
+        <section class="hero">
+            <h2>Empowering Education Through Technology</h2>
+            <p>Join thousands of students and teachers in our innovative learning environment</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">10K+</div>
+                    <div>Active Students</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div>Educational Resources</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div>Success Rate</div>
+                </div>
+            </div>
+            <a href="#courses" class="cta-button">Explore Courses</a>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <h3>Interactive Learning</h3>
+                <p>Engage with dynamic content and real-time feedback to enhance your learning experience.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Progress Tracking</h3>
+                <p>Monitor student progress with detailed analytics and personalized learning paths.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Collaborative Tools</h3>
+                <p>Work together in virtual classrooms and study groups to achieve better results.</p>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>Made with ❤️ by Game Lovers</p>
+        <p>© 2024 EduLearn Platform - Empowering Education</p>
     </footer>
-
-    <div id="cookie-consent" class="cookie-popup">
-        <div class="cookie-content">
-            <h3>🍪 Cookie Consent</h3>
-            <p>We use cookies to remember your favorite games and improve your experience!</p>
-            <div class="cookie-buttons">
-                <button id="accept-cookies" class="accept-btn">Accept</button>
-                <button id="decline-cookies" class="decline-btn">Decline</button>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
 </body>
 </html> 
