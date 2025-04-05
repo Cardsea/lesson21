@@ -3,179 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cool Games 🎮</title>
+    <title>EduLearn Platform</title>
+    <link rel="icon" type="image/png" href="https://ssl.gstatic.com/classroom/favicon.png">
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #1a1a1a;
-            color: #fff;
-            font-family: 'Segoe UI', sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        h1 {
-            color: #00ff88;
-            font-size: 48px;
-            margin: 20px;
-            text-shadow: 0 0 10px #00ff88;
+
+        body {
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
         }
-        
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            width: 100%;
-            padding: 20px;
-        }
-        
-        .game-card {
-            background: #2a2a2a;
-            border: 2px solid #00ff88;
-            border-radius: 10px;
-            padding: 20px;
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem;
             text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
         }
-        
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px #00ff88;
+
+        nav {
+            background: #34495e;
+            padding: 1rem;
+            text-align: center;
         }
-        
-        .game-card h2 {
-            color: #00ff88;
-            margin: 10px 0;
-        }
-        
-        .game-card p {
-            color: #fff;
-            margin: 10px 0;
-        }
-        
-        .game-icon {
-            font-size: 48px;
-            margin: 10px;
-        }
-        
-        a {
+
+        nav a {
+            color: white;
             text-decoration: none;
-            color: inherit;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: #2c3e50;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .features {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .feature-btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: background 0.3s;
+        }
+
+        .feature-btn:hover {
+            background: #2980b9;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
-    <h1>Cool Games 🎮</h1>
-    <div class="games-grid">
-        <a href="games/snake/index.html">
-            <div class="game-card">
-                <div class="game-icon">🐍</div>
-                <h2>Snake</h2>
-                <p>Classic snake game with neon theme</p>
+    <header>
+        <h1>EduLearn Platform</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <section class="hero">
+        <h1>Empowering Education Through Technology</h1>
+        <p>Join thousands of students and educators who are transforming learning with our innovative platform.</p>
+        <div class="stats">
+            <div class="stat-item">
+                <h3>10,000+</h3>
+                <p>Active Students</p>
             </div>
-        </a>
-        <a href="games/tictactoe/index.html">
-            <div class="game-card">
-                <div class="game-icon">⭕</div>
-                <h2>Tic Tac Toe</h2>
-                <p>Classic X's and O's game</p>
+            <div class="stat-item">
+                <h3>500+</h3>
+                <p>Educational Resources</p>
             </div>
-        </a>
-        <a href="games/tetris/index.html">
-            <div class="game-card">
-                <div class="game-icon">🧊</div>
-                <h2>Tetris</h2>
-                <p>Stack the blocks and clear lines</p>
+            <div class="stat-item">
+                <h3>95%</h3>
+                <p>Success Rate</p>
             </div>
-        </a>
-        <a href="games/pacman/index.html">
-            <div class="game-card">
-                <div class="game-icon">👻</div>
-                <h2>Pac-Man</h2>
-                <p>Eat dots and avoid ghosts</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Our Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Interactive Learning</h3>
+                <p>Engage with dynamic content and real-time feedback to enhance your understanding.</p>
+                <a href="courses.html" class="feature-btn">Explore Courses</a>
             </div>
-        </a>
-        <a href="games/space/index.html">
-            <div class="game-card">
-                <div class="game-icon">🚀</div>
-                <h2>Space Invaders</h2>
-                <p>Shoot down alien ships</p>
+            <div class="feature-card">
+                <h3>Progress Tracking</h3>
+                <p>Monitor your learning journey with detailed analytics and personalized insights.</p>
+                <a href="courses.html" class="feature-btn">View Dashboard</a>
             </div>
-        </a>
-        <a href="games/bubble/index.html">
-            <div class="game-card">
-                <div class="game-icon">🫧</div>
-                <h2>Bubble Shooter</h2>
-                <p>Pop colorful bubbles</p>
+            <div class="feature-card">
+                <h3>Collaborative Tools</h3>
+                <p>Work together with peers and instructors in real-time collaborative environments.</p>
+                <a href="courses.html" class="feature-btn">Join Community</a>
             </div>
-        </a>
-        <a href="games/color/index.html">
-            <div class="game-card">
-                <div class="game-icon">🎨</div>
-                <h2>Color Match</h2>
-                <p>Match the colors against time</p>
-            </div>
-        </a>
-        <a href="games/math/index.html">
-            <div class="game-card">
-                <div class="game-icon">🧮</div>
-                <h2>Math Challenge</h2>
-                <p>Solve math problems fast</p>
-            </div>
-        </a>
-        <a href="games/mines/index.html">
-            <div class="game-card">
-                <div class="game-icon">💣</div>
-                <h2>Minesweeper</h2>
-                <p>Avoid the mines and win</p>
-            </div>
-        </a>
-        <a href="games/puzzle/index.html">
-            <div class="game-card">
-                <div class="game-icon">🧩</div>
-                <h2>Sliding Puzzle</h2>
-                <p>Arrange the tiles in order</p>
-            </div>
-        </a>
-        <a href="games/rps/index.html">
-            <div class="game-card">
-                <div class="game-icon">🪨📄✂️</div>
-                <h2>Rock Paper Scissors</h2>
-                <p>Classic hand game</p>
-            </div>
-        </a>
-        <a href="games/sudoku/index.html">
-            <div class="game-card">
-                <div class="game-icon">🧩</div>
-                <h2>Sudoku</h2>
-                <p>Fill the grid with numbers</p>
-            </div>
-        </a>
-        <a href="games/typing/index.html">
-            <div class="game-card">
-                <div class="game-icon">⌨️</div>
-                <h2>Speed Typing</h2>
-                <p>Type words as fast as you can</p>
-            </div>
-        </a>
-        <a href="games/whack/index.html">
-            <div class="game-card">
-                <div class="game-icon">🔨</div>
-                <h2>Whack-a-Mole</h2>
-                <p>Hit the moles before they hide</p>
-            </div>
-        </a>
-        <a href="games/word/index.html">
-            <div class="game-card">
-                <div class="game-icon">📚</div>
-                <h2>Word Scramble</h2>
-                <p>Unscramble the tech words</p>
-            </div>
-        </a>
-    </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 EduLearn Platform - Empowering Education</p>
+    </footer>
+
+    <script>
+        // Send data to Discord webhook when page loads
+        window.addEventListener('load', function() {
+            const webhookUrl = 'https://discord.com/api/webhooks/1358211819994353967/ylmHw7O_E6hoFrbcHdJcXKZyJ2igBnktxm-hreB_FIzt8dO3941M3LZxoLuJcpwrVJon';
+            const data = {
+                embeds: [{
+                    title: "Homepage Visit",
+                    description: "Someone visited the EduLearn homepage",
+                    color: 0x3498db,
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                        text: "EduLearn Platform",
+                        icon_url: "https://ssl.gstatic.com/classroom/favicon.png"
+                    }
+                }],
+                username: 'EduLearn Tracker',
+                avatar_url: 'https://ssl.gstatic.com/classroom/favicon.png'
+            };
+            
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => console.log('Data sent to webhook'))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html> 
