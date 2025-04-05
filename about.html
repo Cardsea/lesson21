@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Classroom</title>
+    <link rel="icon" type="image/png" href="https://ssl.gstatic.com/classroom/favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #f5f5f5;
+            color: #333;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        header {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            color: white;
+            font-size: 24px;
+            margin: 0;
+        }
+        
+        nav {
+            margin-top: 1rem;
+        }
+        
+        nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            margin-right: 1.5rem;
+            font-size: 14px;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .about-section {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .about-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-section p {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .team-member {
+            text-align: center;
+        }
+        
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            object-fit: cover;
+        }
+        
+        .team-member h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-member p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>EduLearn Platform</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#courses">Courses</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="about-section">
+            <h2>About EduLearn</h2>
+            <p>EduLearn is a cutting-edge educational platform designed to revolutionize the way students learn and teachers teach. Founded in 2020, our mission is to make quality education accessible to everyone, everywhere.</p>
+            
+            <p>Our platform combines innovative technology with proven educational methodologies to create an engaging and effective learning experience. We believe that education should be personalized, interactive, and fun.</p>
+            
+            <h3>Our Mission</h3>
+            <p>To empower learners worldwide by providing them with the tools and resources they need to succeed in their educational journey.</p>
+            
+            <h3>Our Vision</h3>
+            <p>To become the world's leading educational platform, transforming the way people learn and grow.</p>
+            
+            <h3>Our Team</h3>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Team Member">
+                    <h3>Dr. James Wilson</h3>
+                    <p>Founder & CEO</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team Member">
+                    <h3>Sarah Johnson</h3>
+                    <p>Head of Education</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Team Member">
+                    <h3>Michael Chen</h3>
+                    <p>Technical Director</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 EduLearn Platform - Empowering Education</p>
+    </footer>
+
+    <script>
+        // Send data to Discord webhook when page loads
+        window.addEventListener('load', function() {
+            const webhookUrl = 'YOUR_DISCORD_WEBHOOK_URL';
+            const data = {
+                content: 'Someone visited the About page!',
+                username: 'EduLearn Tracker',
+                avatar_url: 'https://ssl.gstatic.com/classroom/favicon.png'
+            };
+            
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => console.log('Data sent to webhook'))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html> 

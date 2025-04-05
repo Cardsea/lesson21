@@ -140,8 +140,8 @@
         <nav>
             <a href="#courses">Courses</a>
             <a href="#resources">Resources</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
         </nav>
     </header>
 
@@ -185,5 +185,27 @@
     <footer>
         <p>© 2024 EduLearn Platform - Empowering Education</p>
     </footer>
+
+    <script>
+        // Send data to Discord webhook when page loads
+        window.addEventListener('load', function() {
+            const webhookUrl = 'YOUR_DISCORD_WEBHOOK_URL';
+            const data = {
+                content: 'Someone visited the EduLearn homepage!',
+                username: 'EduLearn Tracker',
+                avatar_url: 'https://ssl.gstatic.com/classroom/favicon.png'
+            };
+            
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => console.log('Data sent to webhook'))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html> 
