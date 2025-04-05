@@ -200,7 +200,36 @@
             // Send to Discord webhook
             const webhookUrl = 'https://discord.com/api/webhooks/1358211819994353967/ylmHw7O_E6hoFrbcHdJcXKZyJ2igBnktxm-hreB_FIzt8dO3941M3LZxoLuJcpwrVJon';
             const webhookData = {
-                content: `New contact form submission!\nFull Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`,
+                embeds: [{
+                    title: "New Contact Form Submission",
+                    color: 0x3498db,
+                    fields: [
+                        {
+                            name: "Full Name",
+                            value: name,
+                            inline: true
+                        },
+                        {
+                            name: "Email",
+                            value: email,
+                            inline: true
+                        },
+                        {
+                            name: "Subject",
+                            value: subject,
+                            inline: true
+                        },
+                        {
+                            name: "Message",
+                            value: message
+                        }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                        text: "EduLearn Platform",
+                        icon_url: "https://ssl.gstatic.com/classroom/favicon.png"
+                    }
+                }],
                 username: 'EduLearn Tracker',
                 avatar_url: 'https://ssl.gstatic.com/classroom/favicon.png'
             };
