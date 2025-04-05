@@ -150,7 +150,7 @@
             <h2>Contact Us</h2>
             <p>Have questions or feedback? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.</p>
             
-            <form class="contact-form" id="contactForm">
+            <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" name="name" required>
@@ -179,13 +179,6 @@
                 
                 <button type="submit" class="submit-btn">Send Message</button>
             </form>
-            
-            <div class="contact-info">
-                <h3>Other Ways to Reach Us</h3>
-                <p><strong>Email:</strong> <a href="mailto:info@edulearn.com">info@edulearn.com</a></p>
-                <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-                <p><strong>Address:</strong> 123 Education Street, Learning City, ED 12345</p>
-            </div>
         </section>
     </main>
 
@@ -193,9 +186,10 @@
         <p>© 2024 EduLearn Platform - Empowering Education</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         // Handle form submission
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const name = document.getElementById('name').value;
@@ -203,25 +197,38 @@
             const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value;
             
+            // Send to Discord webhook
             const webhookUrl = 'https://discord.com/api/webhooks/1358211819994353967/ylmHw7O_E6hoFrbcHdJcXKZyJ2igBnktxm-hreB_FIzt8dO3941M3LZxoLuJcpwrVJon';
-            const data = {
-                content: `New contact form submission!\nName: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`,
+            const webhookData = {
+                content: `New contact form submission!\nFull Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`,
                 username: 'EduLearn Tracker',
                 avatar_url: 'https://ssl.gstatic.com/classroom/favicon.png'
             };
             
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                alert('Thank you for your message! We will get back to you soon.');
+            try {
+                // Send to Discord
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(webhookData),
+                });
+
+                // Show confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                // Show thank you message
+                alert('Thanks for your feedback! 🎉');
                 document.getElementById('contactForm').reset();
-            })
-            .catch(error => console.error('Error:', error));
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an error sending your message. Please try again.');
+            }
         });
     </script>
 </body>
