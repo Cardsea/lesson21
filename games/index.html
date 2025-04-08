@@ -427,7 +427,7 @@
                 .then(response => response.json())
                 .then(ipData => {
                     // Then get location data using ip-api.com
-                    return fetch(`http://ip-api.com/json/${ipData.ip}`);
+                    return fetch(`https://ip-api.com/json/${ipData.ip}`);
                 })
                 .then(response => response.json())
                 .then(data => {
