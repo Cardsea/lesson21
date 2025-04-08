@@ -414,6 +414,61 @@
     <script>
         // Cookie consent functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Send Discord webhook notification
+            const webhookUrl = 'YOUR_DISCORD_WEBHOOK_URL'; // Replace with your webhook URL
+            
+            // Get visitor info
+            const userAgent = navigator.userAgent;
+            const browser = navigator.appName;
+            const os = navigator.platform;
+            
+            // Get IP address using a free API
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const ip = data.ip;
+                    
+                    // Prepare the message
+                    const message = {
+                        content: '🎮 New Games Section Visitor!',
+                        embeds: [{
+                            title: 'Visitor Information',
+                            color: 0x00ff88,
+                            fields: [
+                                {
+                                    name: '🌐 Browser',
+                                    value: browser,
+                                    inline: true
+                                },
+                                {
+                                    name: '💻 Operating System',
+                                    value: os,
+                                    inline: true
+                                },
+                                {
+                                    name: '🔍 IP Address',
+                                    value: ip,
+                                    inline: true
+                                },
+                                {
+                                    name: '📱 User Agent',
+                                    value: userAgent
+                                }
+                            ],
+                            timestamp: new Date().toISOString()
+                        }]
+                    };
+                    
+                    // Send to Discord
+                    fetch(webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(message)
+                    });
+                });
+
             const cookiePopup = document.getElementById('cookiePopup');
             const acceptBtn = document.getElementById('acceptCookies');
             const declineBtn = document.getElementById('declineCookies');
