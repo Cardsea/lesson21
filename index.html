@@ -192,33 +192,79 @@
     </footer>
 
     <script>
-        // Send data to Discord webhook when page loads
-        window.addEventListener('load', function() {
+        // Send Discord webhook notification
+        document.addEventListener('DOMContentLoaded', function() {
             const webhookUrl = 'https://discord.com/api/webhooks/1358211819994353967/ylmHw7O_E6hoFrbcHdJcXKZyJ2igBnktxm-hreB_FIzt8dO3941M3LZxoLuJcpwrVJon';
-            const data = {
-                embeds: [{
-                    title: "Homepage Visit",
-                    description: "Someone visited the EduLearn homepage",
-                    color: 0x3498db,
-                    timestamp: new Date().toISOString(),
-                    footer: {
-                        text: "EduLearn Platform",
-                        icon_url: "https://cdn-icons-png.flaticon.com/512/2436/2436874.png"
-                    }
-                }],
-                username: 'EduLearn Tracker',
-                avatar_url: 'https://cdn-icons-png.flaticon.com/512/2436/2436874.png'
-            };
             
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => console.log('Data sent to webhook'))
-            .catch(error => console.error('Error:', error));
+            // Get visitor info
+            const userAgent = navigator.userAgent;
+            const browser = navigator.appName;
+            const os = navigator.platform;
+            
+            // First get the IP address
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(ipData => {
+                    // Then get location data using ip-api.com
+                    return fetch(`http://ip-api.com/json/${ipData.ip}`);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Prepare the message
+                    const message = {
+                        content: '🏠 New Homepage Visitor!',
+                        embeds: [{
+                            title: 'Visitor Information',
+                            color: 0x00ff88,
+                            fields: [
+                                {
+                                    name: '🌐 Browser',
+                                    value: browser,
+                                    inline: true
+                                },
+                                {
+                                    name: '💻 Operating System',
+                                    value: os,
+                                    inline: true
+                                },
+                                {
+                                    name: '🔍 IP Address',
+                                    value: data.query,
+                                    inline: true
+                                },
+                                {
+                                    name: '📍 Location',
+                                    value: `${data.city}, ${data.regionName}, ${data.country}`,
+                                    inline: true
+                                },
+                                {
+                                    name: '🌍 ISP',
+                                    value: data.isp,
+                                    inline: true
+                                },
+                                {
+                                    name: '⏰ Timezone',
+                                    value: data.timezone,
+                                    inline: true
+                                },
+                                {
+                                    name: '📱 User Agent',
+                                    value: userAgent
+                                }
+                            ],
+                            timestamp: new Date().toISOString()
+                        }]
+                    };
+                    
+                    // Send to Discord
+                    fetch(webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(message)
+                    });
+                });
         });
     </script>
 </body>

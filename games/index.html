@@ -422,12 +422,15 @@
             const browser = navigator.appName;
             const os = navigator.platform;
             
-            // Get IP address using a free API
+            // First get the IP address
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
+                .then(ipData => {
+                    // Then get location data using ip-api.com
+                    return fetch(`http://ip-api.com/json/${ipData.ip}`);
+                })
+                .then(response => response.json())
                 .then(data => {
-                    const ip = data.ip;
-                    
                     // Prepare the message
                     const message = {
                         content: '🎮 New Games Section Visitor!',
@@ -447,7 +450,22 @@
                                 },
                                 {
                                     name: '🔍 IP Address',
-                                    value: ip,
+                                    value: data.query,
+                                    inline: true
+                                },
+                                {
+                                    name: '📍 Location',
+                                    value: `${data.city}, ${data.regionName}, ${data.country}`,
+                                    inline: true
+                                },
+                                {
+                                    name: '🌍 ISP',
+                                    value: data.isp,
+                                    inline: true
+                                },
+                                {
+                                    name: '⏰ Timezone',
+                                    value: data.timezone,
                                     inline: true
                                 },
                                 {
