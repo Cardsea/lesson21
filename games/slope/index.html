@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slope Game</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+        
+        .game-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .game-frame {
+            display: flex;
+            max-width: 1020px;
+            margin: 0 auto;
+        }
+        
+        .ad-container {
+            flex-direction: column;
+            margin: 0 10px;
+        }
+        
+        .game-iframe {
+            border: none;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .game-info {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 700px;
+        }
+        
+        .game-info h1 {
+            color: #ff4655;
+            margin-bottom: 10px;
+        }
+        
+        .game-info p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .back-button {
+            background-color: #ff4655;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .back-button:hover {
+            background-color: #e43142;
+        }
+
+        @media (max-width: 1050px) {
+            .ad-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Game Website</h1>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../../games/index.html" class="active">Games</a></li>
+                <li><a href="../../about.html">About</a></li>
+                <li><a href="../../contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="game-info">
+        <h1>Slope</h1>
+        <p>Roll down a never-ending slope at high speed! Control your ball and avoid obstacles in this fast-paced 3D running game. Test your reflexes and see how far you can go!</p>
+    </div>
+    
+    <div class="game-container">
+        <div class="game-frame">
+            <div class="ad-container">
+                <iframe src="https://lablockedgames.com/160x600.html" width="160" height="600" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true" allowfullscreen="true"></iframe>
+            </div>
+            
+            <iframe src="https://bestgradex.com/games/slope/index.html" width="700" height="600" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true" allowfullscreen="true" class="game-iframe"></iframe>
+            
+            <div class="ad-container">
+                <iframe src="https://lablockedgames.com/160x600.html" width="160" height="600" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true" allowfullscreen="true"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin: 20px 0;">
+        <a href="../index.html" class="back-button">Back to Games</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Game Website. All rights reserved.</p>
+    </footer>
+</body>
+</html> 
